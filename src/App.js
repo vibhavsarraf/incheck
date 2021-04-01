@@ -2,32 +2,41 @@ import { useState } from 'react';
 import './App.css';
 
 function App() {
-  const [l, sl] = useState(2);
-  const defaultNum = Array(l).fill('0').reduce((x, y) => x + y);
-  const [x, sx] = useState(defaultNum);
-  const [y, sy] = useState(defaultNum);
+  const [l, sl] = useState(3);
+  const [n, sn] = useState(2);
+  const [nums, setNums] = useState(Array(n).fill(Array(l).fill('0').join('')));
   const [correct, setCorrect] = useState(0);
   const [incorrect, setIncorrect] = useState(0);
   const [resultShown, setResultShown] = useState(false);
   const [testRunning, setTestRunning] = useState(false);
   const [result, setResult] = useState('');
 
+  function resetNums(l, n) {
+    setNums(Array(n).fill(Array(l).fill('0').join('')));
+  }
+
+  function updateParameters(l, n) {
+    sl(l);
+    sn(n);
+    resetNums(l, n);
+  }
+
   function stopTest() {
     setTestRunning(false);
-    sx(defaultNum);
-    sy(defaultNum);
+    resetNums(l, n);
     setResultShown(true);
   }
 
   function newQuestion() {
-    const getRandomNumber = (len) => Array(len).fill(0).map(_ => Math.floor(Math.random() * 9) + 1).reduce((x, y) => x + y.toString());
-    sx(getRandomNumber(l));
-    sy(getRandomNumber(l));
+    const getRandomNumber = (len) => Array(len).fill(0).map(_ => Math.floor(Math.random() * 9) + 1).join('');
+    const nums = Array(n).fill('').map(_ => getRandomNumber(l));
+    setNums(nums);
   }
 
   function submitResult() {
     if (!testRunning) return;
-    if (Number(x) + Number(y) != Number(result)) {
+    const sum = nums.reduce((x, y) => x + Number(y), 0);
+    if (sum !== Number(result)) {
       setIncorrect(incorrect + 1);
     } else {
       setCorrect(correct + 1);
@@ -47,12 +56,17 @@ function App() {
 
   return (
     <div className="App">
+      <div className="section">
+        <span>{`L : `}</span>
+        <input type="number" size={1} value={l} disabled={testRunning} onChange={e => updateParameters(Number(e.target.value), n)} />
+        <span>{`N : `}</span>
+        <input type="number" size={1} value={n} disabled={testRunning} onChange={e => updateParameters(l, Number(e.target.value))} />
+      </div>
+      <div className="section">
+        {nums.map(x => <div>{x}</div>)}
+        <input id="result" type="number" value={result} onChange={e => setResult(e.target.value)} onKeyPress={e => e.key === 'Enter' && submitResult()} />
+      </div>
       <div>
-        <div>{x}</div>
-        <div>{y}</div>
-        <input id="result" type="text" value={result} onChange={e => setResult(e.target.value)} onKeyPress={e => e.key === 'Enter' && submitResult()} />
-        <br />
-        <br />
         {!testRunning &&
           (
             resultShown ? (
