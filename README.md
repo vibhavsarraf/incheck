@@ -1,3 +1,3 @@
 # In Check
 
-Keep your body in check
+Keep your brain & body in check (http://vibhavs.com/incheck)

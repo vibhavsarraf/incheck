@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
@@ -54,6 +54,8 @@ function App() {
     document.getElementById('result').focus();
   }
 
+  useEffect(() => document.getElementById('result').focus(), [testRunning])
+
   return (
     <div className="App">
       <div className="section">
@@ -63,8 +65,11 @@ function App() {
         <input type="number" size={1} value={n} disabled={testRunning} onChange={e => updateParameters(l, Number(e.target.value))} />
       </div>
       <div className="section">
+        Add the following numbers for 2 minutes
+      </div>
+      <div className="section">
         {nums.map(x => <div>{x}</div>)}
-        <input id="result" type="number" value={result} onChange={e => setResult(e.target.value)} onKeyPress={e => e.key === 'Enter' && submitResult()} />
+        <input id="result" type="number" value={result} disabled={!testRunning} onChange={e => setResult(e.target.value)} onKeyPress={e => e.key === 'Enter' && submitResult()} />
       </div>
       <div>
         {!testRunning &&
