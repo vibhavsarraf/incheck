@@ -54,7 +54,10 @@ function App() {
     document.getElementById('result').focus();
   }
 
-  useEffect(() => document.getElementById('result').focus(), [testRunning])
+  useEffect(() => {
+    document.getElementById('result').focus();
+    document.getElementById('result').value = "";
+  }, [testRunning])
 
   return (
     <div className="App">
