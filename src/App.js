@@ -68,7 +68,7 @@ function App() {
         <input type="number" size={1} value={n} disabled={testRunning} onChange={e => updateParameters(l, Number(e.target.value))} />
       </div>
       <div className="section">
-        Add the following numbers for 2 minutes
+        Add the following numbers for 2 minutes (do this everyday and keep track of your performance)
       </div>
       <div className="section">
         {nums.map(x => <div>{x}</div>)}
