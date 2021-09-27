@@ -4,6 +4,7 @@ import './App.css';
 function App() {
   const [l, sl] = useState(3);
   const [n, sn] = useState(2);
+  const [t, st] = useState(2);
   const [nums, setNums] = useState(Array(n).fill(Array(l).fill('0').join('')));
   const [correct, setCorrect] = useState(0);
   const [incorrect, setIncorrect] = useState(0);
@@ -48,7 +49,7 @@ function App() {
   function runTest() {
     setCorrect(0);
     setIncorrect(0);
-    setTimeout(stopTest, 1000 * 60 * 2)
+    setTimeout(stopTest, t * 60 * 1000)
     setTestRunning(true);
     newQuestion();
     document.getElementById('result').focus();
@@ -66,9 +67,11 @@ function App() {
         <input type="number" size={1} value={l} disabled={testRunning} onChange={e => updateParameters(Number(e.target.value), n)} />
         <span>{`N : `}</span>
         <input type="number" size={1} value={n} disabled={testRunning} onChange={e => updateParameters(l, Number(e.target.value))} />
+        <span>{`T : `}</span>
+        <input type="number" size={1} value={t} disabled={testRunning} onChange={e => st(Number(e.target.value))} />
       </div>
       <div className="section">
-        Add the following numbers for 2 minutes (do this everyday and keep track of your performance)
+        Add the following numbers for {t} minutes (do this everyday and keep track of your performance)
       </div>
       <div className="section">
         {nums.map(x => <div>{x}</div>)}
