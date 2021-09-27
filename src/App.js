@@ -5,6 +5,7 @@ function App() {
   const [l, sl] = useState(3);
   const [n, sn] = useState(2);
   const [t, st] = useState(2);
+  const [op, setOp] = useState(0);
   const [nums, setNums] = useState(Array(n).fill(Array(l).fill('0').join('')));
   const [correct, setCorrect] = useState(0);
   const [incorrect, setIncorrect] = useState(0);
@@ -36,7 +37,24 @@ function App() {
 
   function submitResult() {
     if (!testRunning) return;
-    const sum = nums.reduce((x, y) => x + Number(y), 0);
+    let sum;
+    switch (op) {
+      case 0:
+        sum = nums.reduce((x, y) => {
+          return x + Number(y)
+        }, 0);
+        break;
+      // case 1:
+      //   return x - Number(y)
+      case 2:
+        sum = nums.reduce((x, y) => {
+          return x * Number(y)
+        }, 1);
+        break;
+      default:
+        sum = 0;
+    }
+    console.log(sum, result);
     if (sum !== Number(result)) {
       setIncorrect(incorrect + 1);
     } else {
@@ -69,6 +87,12 @@ function App() {
         <input type="number" size={1} value={n} disabled={testRunning} onChange={e => updateParameters(l, Number(e.target.value))} />
         <span>{`T : `}</span>
         <input type="number" size={1} value={t} disabled={testRunning} onChange={e => st(Number(e.target.value))} />
+        <span>{`Operator : `}</span>
+        <select value={op} onChange={e => setOp(Number(e.target.value))}>
+          <option key={0} value={0}>+</option>
+          {/* <option key={1} value={1}>-</option> */}
+          <option key={2} value={2}>*</option>
+        </select>
       </div>
       <div className="section">
         Add the following numbers for {t} minutes (do this everyday and keep track of your performance)
